@@ -11,5 +11,13 @@ Please however dont claim this as yours (thats selfish)
 
 If you have any questions Ill be happy to respond.
 
+<h2>Contributions</h2><br>
+Feel free to contribute to this project, and have fun
+
+There are various to do tasks such as:
+<ul>
+  <li>Add a scraper: this will allow someone to recieve news information about an earthquake event.</li>
+</ul>
+
 Thanks
 Have fun!
