@@ -1,12 +1,12 @@
 <?php
-error_reporting(0);
-    if(!isset($_REQUEST['sigTime'])) {
+error_reporting(0); // dev
+    if(!isset($_REQUEST['sigTime'])) { // default time frame for data retrieval
         $dataurl = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson';
     }
-    $url = $_REQUEST['sigTime'];
-    $mag = $_REQUEST['mag'];
+    $url = $_REQUEST['sigTime']; // get time frame
+    $mag = $_REQUEST['mag']; //get magnitude
     $dataurl = "";
-    if(!isset($mag)) {
+    if(!isset($mag)) { // mag ~ if magnitude not specified, get significant events only
         switch ($url) {
             case 'pastweek':
                 $dataurl = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson';
@@ -24,7 +24,7 @@ error_reporting(0);
             default:
                 $dataurl = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson';
         }
-    } else {
+    } else { // mag ~ if mag specified get specific magnitude different time frames
         switch ($url) {
             case 'pasthour':
                 $dataurl = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/'.$mag.'_hour.geojson';
@@ -39,7 +39,7 @@ error_reporting(0);
                 $dataurl = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/'.$mag.'_month.geojson';
                 break;
             default:
-                $dataurl = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_hour.geojson';
+                $dataurl = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_hour.geojson'; //default ~ get above 4.5 magnitude last hour
         }
     }
 ?>
@@ -53,21 +53,19 @@ error_reporting(0);
   <script src="v2/api.js"></script>
   <script>
 
+      /**GUP: GET URL PARAMETERS**/
       function gup() {
-          /**GUP: GET URL PARAMETERS**/
-          function gup() {
-              var qs = document.location.search;
-              qs = qs.split('+').join(' ');
-              var params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
-              while (tokens = re.exec(qs))
-                  params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
-              return params;
-          }
+          var qs = document.location.search;
+          qs = qs.split('+').join(' ');
+          var params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
+          while (tokens = re.exec(qs))
+              params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+          return params;
       }
 
       function getWinUrl() {
         var params = gup();
-          window.location= '//'+'<?=$_SERVER['SERVER_NAME']?>/earth.php'+'';
+            window.location= '//'+'<?=$_SERVER['SERVER_NAME']?>/earth.php'+'';
       }
 
       function formatDate(date) {
@@ -106,48 +104,46 @@ error_reporting(0);
 
           var xhr = new XMLHttpRequest();
           if (time) {
+            var d = new Date();
+            var startFin = "";
+            var endFin = "";
+            var formattedDateStart = "";
+            var formattedDateEnd = "";
+            var start = "";
+            var end = "";
               switch (time) {
                   case 'Last Week':
-                      var d = new Date();
-                      var startFin = d.setDate(d.getDate() - 7);
-                      var formattedDateStart = formatDate(startFin);
-                      var d = new Date();
-                      var endFin = d.setDate(d.getDate());
-                      var formattedDateEnd = formatDate(endFin);
-                      var start = formattedDateStart;
-                      var end = formattedDateEnd;
+                      startFin = d.setDate(d.getDate() - 7);
+                      formattedDateStart = formatDate(startFin);
+                      endFin = d.setDate(d.getDate());
+                      formattedDateEnd = formatDate(endFin);
+                      start = formattedDateStart;
+                      end = formattedDateEnd;
                       break;
                   case 'Last Month':
-                      var d = new Date();
-                      var startFin = d.setDate(d.getDate() - 30);
-                      var formattedDateStart = formatDate(startFin);
-                      var d = new Date();
-                      var endFin = d.setDate(d.getDate());
-                      var formattedDateEnd = formatDate(endFin);
-                      var start = formattedDateStart;
-                      var end = formattedDateEnd;
+                      startFin = d.setDate(d.getDate() - 30);
+                      formattedDateStart = formatDate(startFin);
+                      endFin = d.setDate(d.getDate());
+                      formattedDateEnd = formatDate(endFin);
+                      start = formattedDateStart;
+                      end = formattedDateEnd;
                       break;
-
                   case 'Last Year':
-                      var d = new Date();
-                      var startFin = d.setDate(d.getDate() - 365);
-                      var formattedDateStart = formatDate(startFin);
-                      var d = new Date();
-                      var endFin = d.setDate(d.getDate());
-                      var formattedDateEnd = formatDate(endFin);
-                      var start = formattedDateStart;
-                      var end = formattedDateEnd;
+                      startFin = d.setDate(d.getDate() - 365);
+                      formattedDateStart = formatDate(startFin);
+                      endFin = d.setDate(d.getDate());
+                      formattedDateEnd = formatDate(endFin);
+                      start = formattedDateStart;
+                      end = formattedDateEnd;
                       break;
 
                   default:
-                      var d = new Date();
-                      var startFin = d.setDate(d.getDate() - 7);
-                      var formattedDateStart = formatDate(startFin);
-                      var d = new Date();
-                      var endFin = d.setDate(d.getDate());
-                      var formattedDateEnd = formatDate(endFin);
-                      var start = formattedDateStart;
-                      var end = formattedDateEnd;
+                      startFin = d.setDate(d.getDate() - 7);
+                      formattedDateStart = formatDate(startFin);
+                      endFin = d.setDate(d.getDate());
+                      formattedDateEnd = formatDate(endFin);
+                      start = formattedDateStart;
+                      end = formattedDateEnd;
                       document.getElementById('timeFrame').innerHTML = 'Time Frame: Last Week';
                       break;
               }
@@ -162,118 +158,96 @@ error_reporting(0);
 
                   var heading  = response.metadata.title;
                   for (var i in response.features) {
-                      debugger;
-                      //M 4.1 - 14km ESE of Alum Rock, California
+                      //  example ~ M 4.1 - 14km ESE of Alum Rock, California
                       var nam = response.features[i].properties.title;
                       var part = nam.split(',');
                       var sec = part[1];
                       if(sec === undefined) {
-                          var sec = part[0];
+                          sec = part[0];
                       }
-                      function getData() {
-                          //get links for each marker
-                          var getlinks = new XMLHttpRequest();
-                          getlinks.open('GET', 'scraper.php?search='+sec);
-                          getlinks.send();
-                          getlinks.onload = function() {
-                              if (getlinks.status === 200) {
-                                  var comeback = (getlinks.response);
-                              }
-
-                          };
-                          return getlinks.response;
-                          //get links for each marker
-                      }
+                      
                       //all features
+                      var name = response.features[i].properties.title;
                       var type = response.features[i].properties.type;
                       var tsuna = response.features[i].properties.tsunami;
                       var magnitude = response.features[i].properties.mag;
+                      var location = response.features[i].properties.place;
                       var place = response.features[i].geometry.coordinates;
+                      var alert = response.features[i].properties.alert;
                       var pos = place[1];
                       var neg = place[0];
-                      var unix_timestamp = response.features[i].properties.time
+                      var unix_timestamp = response.features[i].properties.time;
                       var dateObj = new Date(unix_timestamp);
                       //foreach result add to earth as marker
                       var marker = WE.marker([pos, neg]).addTo(earth);
-                      if(tsuna > 0) {var tsun = 'Yes'} else {tsun = 'No'}
+                      var tsun = "";
+                      if(tsuna > 0) {tsun = 'Yes';} else {tsun = 'No';}
 
                       if(type === 'earthquake') {
-
+                          // determine alert level
+                          var b_message = "";
+                          switch(alert) {
+                            case "green":
+                              b_message = "Moderate";
+                              break;
+                            case "yellow":
+                              b_message = "Severe";
+                              break;
+                            case "orange":
+                              b_message = "Danger";
+                              break;
+                            case "red":
+                              b_message = "Extreme Danger";
+                              break;
+                          }
+                          
                           marker.bindPopup(
-                              '<h6>' + name + '</h6><br />' +
-                              '<h6>Type:' + type + '</h6>' +
-                              '<b>Time: ' + dateObj + '</b><br/>' +
-                              //                        '<button data-target="modal1" class="btn modal-trigger" onclick="openModal(name);">View More</button>'+
-                              '  <ul class="collapsible" data-collapsible="accordion">' +
-                              '    <li>' +
-                              '      <div class="collapsible-header"><i class="material-icons">filter_drama</i>More</div>' +
-                              '      <div class="collapsible-body">' +
-                              '         <span>Tsunami Possible: '+tsun+'</span>' + '<br/>' +
-                              '         <span>Links: </span>' + getlinks +
-                              '      </div>' +
-                              '    </li>' +
-                              '  </ul>'
+                              '<div class="row" style="margin-bottom:0px;">'+
+                              '  <div class="col s12">'+
+                              '    <div class="card blue-grey darken-1">'+
+                              '      <div class="card-content white-text">'+
+                              '        <span class="card-title">'+name+'</span>'+
+                              '        <p>Type: '+ type+'</p>'+
+                              '        <p>Time: '+ dateObj.toDateString()+'</p>'+
+                              '        <p>Location: '+location+'</p>'+
+                              '        <p>Possible Tsunami: '+tsun+'</p>'+
+                              '        <span>Alert Level</span>: <span style="background-color:'+alert+'">'+b_message+'</span>'+
+                              '      </div>'+ 
+                              '      <div class="card-action">'+
+                              '        <a href="#"></a>'+
+                              '        <a href="#"></a>'+
+                              '      </div>'+
+                              '    </div>'+
+                              '  </div>'+
+                              '</div>'
                           );
                       }
-
-
-
                   }
-
-                  init();
+                  
                   document.getElementById('numberOfEvents').innerHTML = 'Number of Events: ' + response.features.length;
                   document.getElementById('heading').innerHTML = heading;
-                  document.getElementById('timeFrame').innerHTML = heading
+                  document.getElementById('timeFrame').innerHTML = heading;
 
               } else {
                   alert('Request failed.  Returned status of ' + xhr.status);
               }
           };
           xhr.send();
-
-          //Start a simple rotation animation
-//          var before = null;
-//          requestAnimationFrame(function animate(now) {
-//              var c = earth.getPosition();
-//              var elapsed = before ? now - before : 0;
-//              before = now;
-//              earth.setCenter([c[0], c[1] + 0.1 * (elapsed / 500)]);
-//              requestAnimationFrame(animate);
-//          });
-
+          
+/** Start a simple rotation animation
+ *          var before = null;
+ *          requestAnimationFrame(function animate(now) {
+ *          var c = earth.getPosition();
+ *          var elapsed = before ? now - before : 0;
+ *          before = now;
+ *          earth.setCenter([c[0], c[1] + 0.1 * (elapsed / 500)]);
+ *          requestAnimationFrame(animate);
+ *          });
+**/
 
       }
   </script>
-  <style type="text/css">
-    html,
-    body {
-      padding: 0;
-      margin: 0;
-      background: #000;
-    }
-
-    #earth_div {
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      position: absolute !important;
-      background-image: -webkit-gradient( linear,
-      left bottom,
-      left top,
-      color-stop(0, rgb(253, 253, 253)),
-      color-stop(0.15, rgb(253, 253, 253)),
-      color-stop(0.53, rgb(223, 223, 223)),
-      color-stop(0.56, rgb(255, 255, 255)),
-      color-stop(1, rgb(253, 253, 253)));
-      background-image: -moz-linear-gradient( center bottom,
-      rgb(253, 253, 253) 0%,
-      rgb(253, 253, 253) 15%,
-      rgb(223, 223, 223) 53%,
-      rgb(255, 255, 255) 56%,
-      rgb(253, 253, 253) 100%);
-    }
-  </style>
+  <link type="text/css" href="resources/css/style.css" rel="stylesheet"/>
 
   <!--Import Google Icon Font-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -292,9 +266,6 @@ error_reporting(0);
 
 <div style="position: fixed;z-index: 100000;top: 0;width: auto;" class="">
   <!-- Dropdown Structure -->
-
-
-
   <ul id="slide-out" class="side-nav">
     <li><div class="user-view">
       <div class="background">
@@ -406,8 +377,8 @@ error_reporting(0);
 <script type="text/javascript" src="resources/js/materialize.min.js"></script>
 
 <script type="text/javascript">
-    function init() {
-
+    (function() {
+        //
         $('.collapsible').collapsible();
 
         // Initialize collapse button
@@ -424,7 +395,7 @@ error_reporting(0);
             }
         );
 
-    }
+    })();
 </script>
 </body>
 
