@@ -165,7 +165,7 @@ error_reporting(0); // dev
                       if(sec === undefined) {
                           sec = part[0];
                       }
-                      
+
                       //all features
                       var name = response.features[i].properties.title;
                       var type = response.features[i].properties.type;
@@ -200,7 +200,6 @@ error_reporting(0); // dev
                               b_message = "Extreme Danger";
                               break;
                           }
-                          
                           marker.bindPopup(
                               '<div class="row" style="margin-bottom:0px;">'+
                               '  <div class="col s12">'+
@@ -210,12 +209,11 @@ error_reporting(0); // dev
                               '        <p>Type: '+ type+'</p>'+
                               '        <p>Time: '+ dateObj.toDateString()+'</p>'+
                               '        <p>Location: '+location+'</p>'+
-                              '        <p>Possible Tsunami: '+tsun+'</p>'+
+                              '        <p>Tsunami: '+tsun+'</p>'+
                               '        <span>Alert Level</span>: <span style="background-color:'+alert+'">'+b_message+'</span>'+
-                              '      </div>'+ 
+                              '      </div>'+
                               '      <div class="card-action">'+
-                              '        <a href="#"></a>'+
-                              '        <a href="#"></a>'+
+                              '        <a class="btn" href="https://www.google.co.za/search?q='+sec+'+earthqake+news" target="_blank">Read Realated News</a>'+
                               '      </div>'+
                               '    </div>'+
                               '  </div>'+
