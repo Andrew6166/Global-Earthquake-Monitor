@@ -1,5 +1,5 @@
 <?php
-#file still a work in progress
+
 /**
  * Created by IntelliJ IDEA.
  * User: Andre
@@ -34,10 +34,13 @@ if(!empty($html)){ //if any html is actually returned
 
     if($row->length > 0){
         foreach($row as $entry){
-            $val = $entry->nodeValue;
-            $nodes = $xpath->query("a/attribute::href", $entry);
+            $nodes = $xpath->query("a", $entry);
             foreach( $nodes as $node ) {
-                echo "https://www.google.co.za/".$node->nodeValue."</br>";
+                $llnks =  $node->getAttribute('href')."</br>";
+                $links = str_replace('/url?q=', '', $llnks);
+                $variable = substr($links, 0, strpos($links, "&sa="));
+
+                echo $variable."<br>";
             }
         }
     } else {
